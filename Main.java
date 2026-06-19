@@ -1,11 +1,14 @@
 import java.util.Scanner;
 import java.util.HashMap;
 
+import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main extends JPanel {
 	// Constants
@@ -18,10 +21,11 @@ public class Main extends JPanel {
 	static final int BOARD_SIZE = 15;	
 	static final HashMap<String, HashMap<String, Integer>> DIRECTIONS = new HashMap<>();
 
-	@Override
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(() -> {
 			JFrame frame = new JFrame("Gomoku");
+			BoardPanel boardPanel = new BoardPanel();
+			frame.add(boardPanel);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(BOARD_SIZE * 32, BOARD_SIZE * 32);
 			frame.setVisible(true);
@@ -127,5 +131,25 @@ public class Main extends JPanel {
 		else {
 			return 0;
 		}
+	}
+}
+
+class BoardPanel extends JPanel {
+	public BoardPanel() {
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int col = Math.round((e.getX() / (float) 32));
+				int row = Math.round((e.getY() / (float) 32));
+
+				System.out.println("ROW: " + row);
+				System.out.println("COL: " + col);
+			}
+		});
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		Graphics2D graphics = (Graphics2D) g;
 	}
 }
