@@ -1,7 +1,13 @@
 import java.util.Scanner;
 import java.util.HashMap;
 
-public class Main {
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+
+public class Main extends JPanel {
 	// Constants
 	static final String EMPTY = "*";
 	static final String PLAYER_1_PIECE = "@";
@@ -12,7 +18,15 @@ public class Main {
 	static final int BOARD_SIZE = 15;	
 	static final HashMap<String, HashMap<String, Integer>> DIRECTIONS = new HashMap<>();
 
+	@Override
 	public static void main(String args[]) {
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame("Gomoku");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(BOARD_SIZE * 32, BOARD_SIZE * 32);
+			frame.setVisible(true);
+		});
+
 		Scanner scanner = new Scanner(System.in);
 		
 		// Set Direction Values
@@ -74,7 +88,7 @@ public class Main {
 			System.out.println();
 		}
 	}
-	
+
 	static boolean inBounds(int row, int col) {
 		return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE; 
 	}
