@@ -54,7 +54,11 @@ class GameState {
     
     public int getWinState() {
         return winState;
-    }   
+    }  
+
+    public int getTurn() {
+        return turn;
+    }
     
     public void makeMove(int row, int col) {
         if (board[row][col] == EMPTY) {

@@ -10,11 +10,17 @@ import java.awt.Dimension;
 class BoardPanel extends JPanel {
 	static final int SQUARE_SIZE = 32;
     private GameState gameState;
+    private CPUPlayer cpu;
+    private int mouseRow;
+    private int mouseCol;
 
 	public BoardPanel() {
 		gameState = new GameState();
+        cpu = new CPUPlayer();
+        
         final int BOARD_SIZE = gameState.BOARD_SIZE;
         setPreferredSize(new Dimension(BOARD_SIZE * SQUARE_SIZE, BOARD_SIZE * SQUARE_SIZE));
+        setBackground(new Color(193,154,107));
         
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -24,8 +30,24 @@ class BoardPanel extends JPanel {
 				int row = (int) Math.floor((e.getY() / SQUARE_SIZE));
 				gameState.makeMove(row, col);
                 repaint();
+                
+                if (gameState.getWinState() != 0) { return; }
+                int move[] = cpu.selectMove(gameState.getBoard());
+                col = move[1];
+                row = move[0];
+                gameState.makeMove(row, col);
+                repaint();
 			}
 		});
+        
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseRow = (int) Math.floor((e.getY() / SQUARE_SIZE));
+                mouseCol = (int) Math.floor((e.getX() / SQUARE_SIZE));
+                repaint();
+            }
+        });
 	}
 	
 	@Override
@@ -50,5 +72,14 @@ class BoardPanel extends JPanel {
 				}
 			}
 		}
+        
+        if (gameState.getTurn() == gameState.PLAYER_1) {
+            graphics.setColor(new Color(0f, 0f, 0f, 0.5f));
+        }
+        else {
+            graphics.setColor(new Color(1f, 1f, 1f, 0.5f));
+        }
+        graphics.fillOval(mouseCol * SQUARE_SIZE, mouseRow * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+            
 	}
 }
