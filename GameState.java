@@ -60,16 +60,32 @@ class GameState {
         return turn;
     }
     
+    public GameState deepCopy() {
+        GameState copyState = new GameState();
+        copyState.board = this.getBoard();
+        copyState.turn = this.turn;
+        copyState.winState = this.winState;
+        return copyState;
+    }
+    
+    public void switchTurn() {
+        turn = turn == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    }
+    
     public void makeMove(int row, int col) {
         if (board[row][col] == EMPTY) {
             board[row][col] = PLAYER_PIECES[turn];
             winState = checkWin(board, turn);
-            turn = turn == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+            switchTurn();
 
             if (winState != 0) {
                 System.out.println("Win State: " + winState);
             }
         }
+    }
+    
+    public void unMakeMove(int row, int col) {
+        board[row][col] = EMPTY;
     }
     
     private static boolean inBounds(int row, int col) {

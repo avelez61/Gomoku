@@ -32,7 +32,7 @@ class BoardPanel extends JPanel {
                 repaint();
                 
                 if (gameState.getWinState() != 0) { return; }
-                int move[] = cpu.selectMove(gameState.getBoard());
+                int move[] = cpu.selectMove(gameState);
                 col = move[1];
                 row = move[0];
                 gameState.makeMove(row, col);
@@ -79,7 +79,6 @@ class BoardPanel extends JPanel {
         else {
             graphics.setColor(new Color(1f, 1f, 1f, 0.5f));
         }
-        graphics.fillOval(mouseCol * SQUARE_SIZE, mouseRow * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
-            
+        graphics.fillOval(mouseCol * SQUARE_SIZE, mouseRow * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);  
 	}
 }

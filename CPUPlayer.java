@@ -17,22 +17,28 @@ class CPUPlayer {
         return moves;
     }
     
-    public int[] selectMove(String[][] board) {
-        ArrayList<int []> moves = getMoves(board);
+    public int[] selectMove(GameState gameState) {
+        ArrayList<int []> moves = getMoves(gameState.getBoard());
+        ArrayList<int []> candidateMoves = new ArrayList<>();
+        
+        GameState newState = gameState.deepCopy();
+        newState.switchTurn();
+        for (int[] move : moves) {
+            newState.makeMove(move[0], move[1]);
+            if (newState.getWinState() != 0) {
+                candidateMoves.add(move);
+            }
+            newState.unMakeMove(move[0], move[1]);
+        }
         
         Random random = new Random();
-        int randomIndex = random.nextInt(moves.size());
-        
-        return moves.get(randomIndex);
-    }
-    
-    private class Move {
-        int row;
-        int col;
-        
-        public Move(int row, int col) {
-            this.row = row;
-            this.col = col;
+        if (candidateMoves.size() > 0) {
+            int randomIndex = random.nextInt(candidateMoves.size());
+            return candidateMoves.get(randomIndex);
+        }
+        else {
+            int randomIndex = random.nextInt(moves.size());
+            return moves.get(randomIndex);
         }
     }
 }
